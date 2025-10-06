@@ -4,7 +4,7 @@ A responsive, accessible Tic-Tac-Toe game with Local & AI modes.
 AI uses a Minimax-based strategy on **Hard**.
 
 ## Demo
-Live: https://your-deployment-url
+Live: https://tic-tac-toe-dhrubaisha2006s-projects.vercel.app/
 
 ## Features
 - Local 2-player
