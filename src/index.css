@@ -1,0 +1,150 @@
+/* src/index.css */
+
+/* Google font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Theme variables --- */
+:root{
+  --bg-from: #fff7ed;       /* soft peach */
+  --bg-to:   #eef2ff;       /* soft indigo */
+  --panel-bg: rgba(255,255,255,0.72);
+  --accent-1: #ff6b81;      /* hot pink */
+  --accent-2: #7c3aed;      /* violet */
+  --accent-3: #08aeea;      /* aqua */
+  --muted: #6b7280;
+  --focus-ring: 0 0 0 6px rgba(124,58,237,0.12);
+  --square-size-mobile: 6.5rem;
+  --square-size-desktop: 9rem;
+}
+
+/* --- base layout --- */
+html, body, #root { height: 100%; }
+body {
+  font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(255,107,129,0.06), transparent 8%),
+              radial-gradient(900px 500px at 90% 90%, rgba(124,58,237,0.04), transparent 12%),
+              linear-gradient(135deg, var(--bg-from), var(--bg-to));
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+/* panel */
+.panel {
+  background: var(--panel-bg);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  backdrop-filter: blur(8px) saturate(1.05);
+  box-shadow: 0 18px 50px rgba(15,23,42,0.10);
+}
+
+/* big board responsive sizes */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, var(--square-size-mobile));
+  grid-template-rows: repeat(3, var(--square-size-mobile));
+  gap: 0.9rem;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+@media (min-width: 768px) {
+  .board {
+    grid-template-columns: repeat(3, var(--square-size-desktop));
+    grid-template-rows: repeat(3, var(--square-size-desktop));
+    gap: 1rem;
+  }
+}
+
+/* square look (use minimal CSS; prefer Tailwind classes in components) */
+.square {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.78));
+  border-radius: 1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: transform .16s cubic-bezier(.2,.9,.3,1), box-shadow .16s;
+  border: 1px solid rgba(15,23,42,0.04);
+}
+.square:hover { transform: translateY(-6px) rotate(-1deg); box-shadow: 0 18px 40px rgba(15,23,42,0.08); }
+.square:active { transform: translateY(-2px) rotate(-0.5deg); }
+
+/* highlight winning moves */
+.square--win {
+  box-shadow: 0 26px 60px rgba(124,58,237,0.14);
+  transform: scale(1.06);
+  border: 1px solid rgba(124,58,237,0.14);
+}
+@keyframes winPulse {
+  0% { transform: scale(1.04); filter: drop-shadow(0 6px 16px rgba(124,58,237,0.06)); }
+  50% { transform: scale(1.09); filter: drop-shadow(0 12px 28px rgba(124,58,237,0.09)); }
+  100% { transform: scale(1.04); }
+}
+.square--win.pulse { animation: winPulse 1000ms ease-in-out infinite; }
+
+/* X & O SVG container */
+.token {
+  width: 68%;
+  height: 68%;
+  display: grid;
+  place-items: center;
+}
+
+/* X animation */
+.x-anim {
+  transform-origin: center;
+  animation: xPop 260ms cubic-bezier(.2,.9,.3,1);
+}
+@keyframes xPop {
+  0% { transform: scale(0.2) rotate(0deg); opacity: 0; }
+  70% { transform: scale(1.08) rotate(-6deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* O animation */
+.o-anim {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: oDraw 480ms ease forwards;
+}
+@keyframes oDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* scoreboard / controls micro styles */
+.score-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.88));
+  border-radius: .75rem;
+  padding: .6rem .9rem;
+  text-align: center;
+  min-width: 3.5rem;
+  box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+}
+
+/* focus ring for keyboard navigation */
+button:focus, .square:focus {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: .75rem;
+}
+
+/* small helper to center the left column controls on large screens */
+.side-column { display:flex; flex-direction:column; gap:0.75rem; align-items:center; }
+
+/* dark theme support */
+body.dark {
+  --bg-from: #0b1220;
+  --bg-to: #071130;
+  --panel-bg: rgba(10,12,16,0.55);
+  color: #e6eef8;
+}
+body.dark .square { background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.04); }
+
